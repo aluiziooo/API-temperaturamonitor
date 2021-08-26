@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.apitemperatura.Cidade.Cidade;
+import br.com.apitemperatura.Cidade.CidadeDAOResponse;
 import br.com.apitemperatura.Cidade.CidadeDao;
 import br.com.apitemperatura.Cidade.Temperatura;
 import br.com.apitemperatura.ConexaoBanco.Conexao;
@@ -75,9 +76,9 @@ public class ApiService {
 	}
 	//SELECIONO A CIDADE DA QUAL QUERO VER AS TEMPERATURAS
 	@SuppressWarnings("null")
-	public Cidade getCidade(String cidade) {
+	public CidadeDAOResponse getCidade(String cidade) {
 		Connection con = Conexao.getConexaoMySQL();
-		Cidade cidadeObj = new Cidade();
+		CidadeDAOResponse cidadeDAOResponse = new CidadeDAOResponse();
 		ArrayList<Temperatura> temperaturas = new ArrayList<Temperatura>();
 		
 		String sql = "SELECT c.nome, t.graus, t.dataehora\r\n" + 
@@ -93,19 +94,20 @@ public class ApiService {
 			ps.setString(1, cidade);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			cidadeObj.setNome(rs.getString("nome"));
+			cidadeDAOResponse.setNome(rs.getString("nome"));
 			temperaturas.add(new Temperatura(rs.getFloat("graus"),rs.getString("dataehora")));
 			while(rs.next()) {
 				temperaturas.add(new Temperatura(rs.getFloat("graus"),rs.getString("dataehora")));
 			}
-			cidadeObj.setTemperaturas(temperaturas);
+			cidadeDAOResponse.setTemperaturas(temperaturas);
 			con.close();
+			cidadeDAOResponse.setMsg("Cidade ativa e monitorada!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return cidadeObj;
+		return cidadeDAOResponse;
 		
 		
 	}
@@ -186,6 +188,27 @@ public class ApiService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Não foi possivel remover cidade do monitoramento!");
+		}
+	}
+	public int verificarSit(String nome) {
+		
+		int sit;
+		Connection con = Conexao.getConexaoMySQL();
+		String sql = "select situacao from cidade where nome = ?";
+		
+		
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, nome);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			sit = rs.getInt("situacao");
+			return sit;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return -1;
 		}
 	}
 }

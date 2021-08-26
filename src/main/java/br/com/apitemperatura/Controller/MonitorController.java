@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.apitemperatura.Cidade.Cidade;
+import br.com.apitemperatura.Cidade.CidadeDAOResponse;
 import br.com.apitemperatura.Service.ApiService;
 
 
@@ -37,12 +38,15 @@ public class MonitorController {
 		//devolver os jasons
 	}
 	@GetMapping("/cities/{nome}")
-	public Cidade buscarCidade(@PathVariable("nome") String nome) {
-		return apis.getCidade(nome);
+	public ResponseEntity<CidadeDAOResponse> buscarCidade(@PathVariable("nome") String nome) {
+		if(apis.verificarSit(nome)==1) {
+			return new ResponseEntity<CidadeDAOResponse>(apis.getCidade(nome), HttpStatus.ACCEPTED); 
+		}
+		return new ResponseEntity<CidadeDAOResponse>(new CidadeDAOResponse("Cidade Desativada para monitoramento!!!"), HttpStatus.FORBIDDEN);
+		
 	}
 	@PostMapping("/cities/{nome}")
 	public void salvarCidade(@RequestBody Cidade cidade){
-		System.out.println(cidade.getNome());
 		apis.salvarCidade(cidade.getNome());
 	}
 	@DeleteMapping("/cities/{nome}")

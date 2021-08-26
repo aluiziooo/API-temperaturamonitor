@@ -11,10 +11,15 @@ public class Agendador extends TimerTask{
 	@Override
 	public void run() {
 		ArrayList<String> cidades = apis.buscarCidades();
+		int sit;
 				
-				for (String cidade : cidades) {
-					apis.getTemperatura(cidade);
-				}
+		for (String cidade : cidades) {
+			if(apis.verificarSit(cidade)==1) {
+				apis.getTemperatura(cidade);
+			}else {
+				continue;
+			}
 		
-	}
+		}
+	}	
 }
