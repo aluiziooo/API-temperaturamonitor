@@ -211,4 +211,34 @@ public class ApiService {
 			return -1;
 		}
 	}
+	public void apagarHistorico(String cidade) {
+		Connection con = Conexao.getConexaoMySQL();
+		int cod_cidade=0;
+	    String sql = "select id from cidade where nome =?;";
+		PreparedStatement ps;
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, cidade);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			cod_cidade = rs.getInt("id");
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sql = "delete from temperatura where id_cidade=?";
+		try {
+			PreparedStatement ps2 = con.prepareStatement(sql);
+			ps2.setInt(1, cod_cidade);
+			ps2.execute();
+			ps2.close();
+			System.out.println("Historico da cidade "+cidade+" Deletado!");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
