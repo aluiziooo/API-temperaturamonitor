@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.apitemperatura.Cidade.Cidade;
 import br.com.apitemperatura.Cidade.CidadeDAOResponse;
+import br.com.apitemperatura.Cidade.CidadeDao;
 import br.com.apitemperatura.Service.ApiService;
 
 
@@ -58,5 +59,9 @@ public class MonitorController {
 	@PatchMapping("/cities/{nome}")
 	public void apagarHistorico(@PathVariable("nome") String cidade) {
 		apis.apagarHistorico(cidade);
+	}
+	@GetMapping("/cities/max_temperatures")
+	public ArrayList<CidadeDao> maioresTemps() {
+		return apis.maioresTemperaturas();
 	}
 }

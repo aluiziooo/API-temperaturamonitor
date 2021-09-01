@@ -3,6 +3,12 @@ package br.com.apitemperatura.Cidade;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CidadeDao {
+	
+	public CidadeDao() {}
+	public CidadeDao(String nome, float temp) {
+		this.nome=nome;
+		this.temperatura=temp;
+	}
 	@JsonProperty("city_name")
 	private String nome;
 	@JsonProperty("temp")

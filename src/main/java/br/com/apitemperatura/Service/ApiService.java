@@ -1,5 +1,6 @@
 package br.com.apitemperatura.Service;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +8,8 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -240,5 +243,56 @@ public class ApiService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	public ArrayList<CidadeDao> maioresTemperaturas(){
+		String sql = "Select * from cidade where situacao=1";
+		Connection con = Conexao.getConexaoMySQL();
+		//relação de cidades
+		HashMap<Integer, String> cidades = new HashMap<Integer, String>();
+		ArrayList<Integer> ids_Cid = new ArrayList<Integer>();
+		String ids="";
+		//Response
+		ArrayList<CidadeDao> cids = new ArrayList<CidadeDao>();
+		
+		try {
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				cidades.put(rs.getInt("id"), rs.getString("nome"));
+			
+			}
+			System.out.println(cidades);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for (Map.Entry<Integer, String> cidade : cidades.entrySet()) {
+			ids_Cid.add(cidade.getKey());
+		} 
+		sql = "SELECT id_cidade, graus\r\n" + 
+				"FROM temperatura temp, cidade c where id_cidade = c.id and c.situacao=1\r\n" + 
+				"GROUP BY id_cidade, graus \r\n" + 
+				"HAVING graus = (SELECT MAX(graus) FROM temperatura WHERE id_cidade = temp.id_cidade)\r\n" + 
+				"ORDER BY graus desc limit 3";
+		try {
+			PreparedStatement ps2 = con.prepareStatement(sql);
+			ResultSet rs = ps2.executeQuery();
+			while(rs.next()) {
+				if(cidades.containsKey(rs.getInt("id_cidade"))) {
+					cids.add(new CidadeDao(cidades.get(rs.getInt("id_cidade")), rs.getFloat("graus")));
+				}
+				
+			}
+			System.out.println(cids);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return cids;
+		
 	}
 }
