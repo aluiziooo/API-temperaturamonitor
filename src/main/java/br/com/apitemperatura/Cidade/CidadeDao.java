@@ -13,6 +13,8 @@ public class CidadeDao {
 	private String nome;
 	@JsonProperty("temp")
 	private float temperatura;
+	@JsonProperty("localidade")
+	private String localidade;
 	
 	
 	public String getNome() {
@@ -27,4 +29,11 @@ public class CidadeDao {
 	public void setTemperatura(float temperatura) {
 		this.temperatura = temperatura;
 	}
+	public String getLocalidade() {
+		return localidade;
+	}
+	public void setLocalidade(String localidade) {
+		this.localidade = localidade;
+	}
+	
 }

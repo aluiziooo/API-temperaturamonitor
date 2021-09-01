@@ -38,10 +38,11 @@ public class ApiService {
 		
 		Connection con = Conexao.getConexaoMySQL();
 		
-		String sql = "insert into cidade(nome) values(?)";
+		String sql = "insert into cidade(nome) values(?,?)";
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, nome);
+			ps.setInt(2, 1);
 			ps.execute();
 			con.close();
 		} catch (SQLException e) {
@@ -136,6 +137,20 @@ public class ApiService {
 		
 		
 		this.cadastrarTemperatura(cidadeET);
+	}
+	public void getCidadePorCep(String cep) {
+		UriComponents uri = UriComponentsBuilder.newInstance()
+				.scheme("https")
+				.host("viacep.com.br")
+				.path("ws/"+cep+"/json/")
+				.build();
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		ResponseEntity<CidadeDao> cidadeET = restTemplate.getForEntity(uri.toString(), CidadeDao.class);
+		
+		this.salvarPorCep(cidadeET);
+		
 	}
 	//CADASTRAR A TEMPERATURA NO BANCO
 	public void cadastrarTemperatura(ResponseEntity<CidadeDao> cidadedao) {
@@ -294,5 +309,10 @@ public class ApiService {
 		
 		return cids;
 		
+	}
+	public void salvarPorCep(ResponseEntity<CidadeDao> cidadeRT) {
+		
+		String cidade = cidadeRT.getBody().getLocalidade();
+		this.salvarCidade(cidade);
 	}
 }

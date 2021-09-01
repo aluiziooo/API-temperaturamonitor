@@ -64,4 +64,8 @@ public class MonitorController {
 	public ArrayList<CidadeDao> maioresTemps() {
 		return apis.maioresTemperaturas();
 	}
+	@PostMapping("/cities/cep/{cep}")
+	public void salvarPorCep(@PathVariable("cep") String cep) {
+		apis.getCidadePorCep(cep);
+	}
 }
