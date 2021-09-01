@@ -1,6 +1,6 @@
 package br.com.apitemperatura.Service;
 
-import java.sql.Array;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.regex.*;
+
+import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
@@ -314,5 +317,15 @@ public class ApiService {
 		
 		String cidade = cidadeRT.getBody().getLocalidade();
 		this.salvarCidade(cidade);
+	}
+	public boolean verificaCEP(String cep) {
+		String REGEX = "^[0-9]{8}+$";
+		Matcher matcher = Pattern.compile(REGEX).matcher(cep);
+        if (matcher.find()) {
+            return true;
+        }else {
+        	return false;
+        }
+        
 	}
 }

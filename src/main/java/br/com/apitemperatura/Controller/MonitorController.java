@@ -65,7 +65,12 @@ public class MonitorController {
 		return apis.maioresTemperaturas();
 	}
 	@PostMapping("/cities/cep/{cep}")
-	public void salvarPorCep(@PathVariable("cep") String cep) {
-		apis.getCidadePorCep(cep);
+	public ResponseEntity<String> salvarPorCep(@PathVariable("cep") String cep) {
+		if(apis.verificaCEP(cep)) {
+			apis.getCidadePorCep(cep);
+			return new ResponseEntity<String>("Cidade cadastrada",HttpStatus.ACCEPTED);
+		}
+		return new ResponseEntity<String>("CEP invalido",HttpStatus.BAD_GATEWAY);
+		
 	}
 }
