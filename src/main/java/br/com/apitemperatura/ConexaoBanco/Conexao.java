@@ -1,7 +1,5 @@
 package br.com.apitemperatura.ConexaoBanco;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,34 +12,8 @@ public class Conexao {
 		 public Conexao() {}
 		 
 		 public static java.sql.Connection getConexaoMySQL() {
-			 URI jdbUri;
-			try {
-				jdbUri = new URI(System.getenv("mysql://od3ro5a3y795jdt6:jimegjnhf0n2d8bj@ik1eybdutgxsm0lo.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/kbil0xf9m4uydczp\r\n" + 
-						"\r\n" + 
-						""));
-				  String username = jdbUri.getUserInfo().split(":")[0];
-				  String password = jdbUri.getUserInfo().split(":")[1];
-				  String port = String.valueOf(jdbUri.getPort());
-				  String jdbUrl = "jdbc:mysql://" + jdbUri.getHost() + ":" + port + jdbUri.getPath();
-				  try {
-					return DriverManager.getConnection(jdbUrl, username, password);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return null;
-				}
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-			}
-			
-
-			  
-
-			  
 			 
-			 /*Connection connection = null;          //atributo do tipo Connection
+			 Connection connection = null;          //atributo do tipo Connection
 
 
 			
@@ -104,7 +76,7 @@ public class Conexao {
 			
 				            return null;
 			
-				        }*/
+				        }
 		 }
 				
 		//Método que retorna o status da sua conexão//
