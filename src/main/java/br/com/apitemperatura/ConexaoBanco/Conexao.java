@@ -29,17 +29,19 @@ public class Conexao {
 				
 					// Configurando a nossa conexão com um banco de dados//
 				
-					        String serverName = "localhost";    //caminho do servidor do BD
+					        //String serverName = "localhost";    //caminho do servidor do BD
 				
-					        String mydatabase ="api_monitor";        //nome do seu banco de dados
+					        //String mydatabase ="api_monitor";        //nome do seu banco de dados
 				
-					        String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
+					       // String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
 				
-					        String username = "root";        //nome de um usuário de seu BD
+					        //String username = "root";        //nome de um usuário de seu BD
 				
-					        String password = "123456";      //sua senha de acesso
-				
-					        connection = DriverManager.getConnection(url, username, password);
+					        //String password = "123456";      //sua senha de acesso
+					String url = "jdbc:mysql://@us-cdbr-east-04.cleardb.com/heroku_883c702bdda9263?reconnect=true";
+					String username="bbc617104a4261";
+					String password="3a32d9ff";
+					connection = DriverManager.getConnection(url, username, password);
 				
 				
 				
