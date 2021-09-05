@@ -2,6 +2,8 @@ package br.com.apitemperatura;
 
 
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Timer;
 
 import org.springframework.boot.SpringApplication;
@@ -25,12 +27,23 @@ public class ApiTemperaturamonitorApplication {
 		//Conexao.getConexaoMySQL();
 
 		//System.out.println(Conexao.statusConection());
+		LocalDateTime dateTime = LocalDateTime.now();
+		long ms = 1000 * dateTime.toEpochSecond(ZoneOffset.UTC);
+		
+		System.out.println(ms%3600000);
+		
+		
+		
+		///////////////////////////////////////////////////////////
+		
+		Long start = 3600000-(ms%3600000);
 		
 		ApiService ser = new ApiService();
-		 
+		
+		
 		Timer timer = new Timer();
 		Agendador agendador = new Agendador();
-		timer.schedule(agendador, 0, 120000);
+		timer.schedule(agendador, start, 3600000);
 		 
 	}
 

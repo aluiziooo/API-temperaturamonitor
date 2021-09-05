@@ -37,7 +37,6 @@ public class MonitorController {
 		
 		ArrayList<String> cidades = apis.buscarCidades();
 		System.out.println(cidades);
-		apis.atualizarTemperaturas();
  		return cidades;
 		
 		

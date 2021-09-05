@@ -41,7 +41,7 @@ public class ApiService {
 		
 		Connection con = Conexao.getConexaoMySQL();
 		
-		String sql = "insert into cidade(nome) values(?,?)";
+		String sql = "insert into cidade(nome,situacao) values(?,?)";
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, nome);
@@ -91,7 +91,7 @@ public class ApiService {
 		String sql = "SELECT c.nome, t.graus, t.dataehora\r\n" + 
 				"FROM cidade as c\r\n" + 
 				"LEFT JOIN temperatura as t\r\n" + 
-				"                on c.id = t.id_cidade where c.nome = ?";
+				"                on c.id = t.id_cidade where c.nome = ? limit 30";
 		
 		String sql2 = "SELECT situacao from cidade where nome=?";
 		
